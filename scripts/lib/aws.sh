@@ -23,7 +23,11 @@ DEFAULT_AWS_CLI_VERSION="2.0.52"
 daws() {
     aws_cli_img_version=${ACK_AWS_CLI_IMAGE_VERSION:-$DEFAULT_AWS_CLI_VERSION}
     aws_cli_img="amazon/aws-cli:$aws_cli_img_version"
-    docker run --rm -v ~/.aws:/root/.aws:z  -v $(pwd):/aws "$aws_cli_img" "$@"
+    docker run --rm \
+    -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+    -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+    -e AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION \
+    -v $(pwd):/aws "$aws_cli_img" "$@"
 }
 
 # aws_check_credentials() calls the STS::GetCallerIdentity API call and
