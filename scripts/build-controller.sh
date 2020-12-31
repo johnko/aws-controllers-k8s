@@ -138,7 +138,7 @@ controller-gen rbac:roleName=$K8S_RBAC_ROLE_NAME paths=./... output:rbac:artifac
 # $config_output_dir/rbac/role.yaml file. We have some other standard Role
 # files for a reader and writer role, so here we rename the `role.yaml` file to
 # `cluster-role-controller.yaml` to better reflect what is in that file.
-mv $config_output_dir/rbac/role.yaml $config_output_dir/rbac/cluster-role-controller.yaml
+mv $config_output_dir/rbac/role.yaml $config_output_dir/rbac/cluster-role-controller.yaml || true
 
 popd 1>/dev/null
 
