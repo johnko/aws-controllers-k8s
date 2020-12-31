@@ -37,8 +37,9 @@ if ! is_installed controller-gen; then
     go mod init tmp 1>/dev/null 2>&1
     go get -d "sigs.k8s.io/controller-tools/cmd/controller-gen@${CONTROLLER_TOOLS_VERSION}" 1>/dev/null 2>&1
     go build -o "$__work_dir/controller-gen" sigs.k8s.io/controller-tools/cmd/controller-gen 1>/dev/null 2>&1
+    mkdir -p "$__install_dir"
     mv "$__work_dir/controller-gen" "$__install_path"
 
-    rm -rf "$WORK_DIR"
+    rm -rf "$__work_dir"
     echo "ok."
 fi
