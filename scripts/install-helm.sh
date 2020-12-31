@@ -29,6 +29,6 @@ if ! is_installed helm; then
     curl -q -L $__helm_url | tar zxf - -C $__tmp_install_dir
     mv $__tmp_install_dir/$__platform-amd64/helm $__tmp_install_dir/.
     chmod +x $__tmp_install_dir/helm
-    sudo mv $__tmp_install_dir/helm /usr/local/bin/helm
+    mv $__tmp_install_dir/helm /usr/local/bin/helm
     echo "ok."
 fi
