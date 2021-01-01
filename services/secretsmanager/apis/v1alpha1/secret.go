@@ -22,14 +22,14 @@ import (
 
 // SecretSpec defines the desired state of Secret
 type SecretSpec struct {
-	 ClientRequestToken *string `json:"clientRequestToken,omitempty"` 
-	 Description *string `json:"description,omitempty"` 
-	 KMSKeyID *string `json:"kmsKeyID,omitempty"` 
+	 ClientRequestToken *string `json:"clientRequestToken,omitempty"`
+	 Description *string `json:"description,omitempty"`
+	 KMSKeyID *string `json:"kmsKeyID,omitempty"`
 	 // +kubebuilder:validation:Required
 	Name *string `json:"name"`
-	 SecretBinary []byte `json:"secretBinary,omitempty"` 
-	 SecretString *string `json:"secretString,omitempty"` 
-	 Tags []*Tag `json:"tags,omitempty"` 
+	 SecretBinary []byte `json:"secretBinary,omitempty"`
+	 SecretString *string `json:"secretString,omitempty"`
+	 Tags []*Tag `json:"tags,omitempty"`
 }
 
 // SecretStatus defines the observed state of Secret
@@ -49,7 +49,7 @@ type SecretStatus struct {
 // Secret is the Schema for the Secrets API
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
-type Secret struct {
+type AWSSecret struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	Spec   SecretSpec   `json:"spec,omitempty"`
@@ -58,12 +58,12 @@ type Secret struct {
 
 // SecretList contains a list of Secret
 // +kubebuilder:object:root=true
-type SecretList struct {
+type AWSSecretList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items []Secret `json:"items"`
+	Items []AWSSecret `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&Secret{}, &SecretList{})
+	SchemeBuilder.Register(&AWSSecret{}, &AWSSecretList{})
 }
