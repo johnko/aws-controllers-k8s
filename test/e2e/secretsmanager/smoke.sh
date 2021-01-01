@@ -26,7 +26,7 @@ debug_msg "executing test: $service_name/$test_name"
 for x in a b c; do
 
     secret_name="ack-test-smoke-$service_name-$x"
-    resource_name="secrets/$secret_name"
+    resource_name="awssecrets/$secret_name"
 
     if secretsmanager_secret_exists "$secret_name"; then
         echo "FAIL: expected $secret_name to not exist in SecretsManager. Did previous test run cleanup?"
@@ -49,7 +49,7 @@ for x in a b c; do
 
     cat <<EOF | kubectl apply -f -
 apiVersion: secretsmanager.services.k8s.aws/v1alpha1
-kind: SecretsManagerSecret
+kind: AWSSecret
 metadata:
   name: $secret_name
 spec:
@@ -64,7 +64,7 @@ sleep $wait_seconds
 for x in a b c; do
 
     secret_name="ack-test-smoke-$service_name-$x"
-    resource_name="secrets/$secret_name"
+    resource_name="awssecrets/$secret_name"
 
     debug_msg "checking secret $secret_name created in SecretsManager"
     if ! secretsmanager_secret_exists "$secret_name"; then
@@ -85,7 +85,7 @@ updated_secret_name="ack-test-smoke-$service_name-b"
 
 cat <<EOF | kubectl apply -f -
 apiVersion: secretsmanager.services.k8s.aws/v1alpha1
-kind: SecretsManagerSecret
+kind: AWSSecret
 metadata:
   name: $updated_secret_name
 spec:
@@ -106,7 +106,7 @@ sleep $wait_seconds
 for x in a b c; do
 
     secret_name="ack-test-smoke-$service_name-$x"
-    resource_name="secrets/$secret_name"
+    resource_name="awssecrets/$secret_name"
 
     kubectl delete "$resource_name" 2>/dev/null
     assert_equal "0" "$?" "Expected success from kubectl delete but got $?" || exit 1
