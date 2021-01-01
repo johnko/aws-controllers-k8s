@@ -25,7 +25,7 @@ rules:
 - apiGroups:
   - secretsmanager.services.k8s.aws
   resources:
-  - secrets
+  - awssecrets
   verbs:
   - create
   - delete
@@ -37,7 +37,7 @@ rules:
 - apiGroups:
   - secretsmanager.services.k8s.aws
   resources:
-  - secrets/status
+  - awssecrets/status
   verbs:
   - get
   - patch
