@@ -142,7 +142,7 @@ controller-gen rbac:roleName=$K8S_RBAC_ROLE_NAME paths=./... output:rbac:artifac
 # `cluster-role-controller.yaml` to better reflect what is in that file.
 mv $helm_output_dir/templates/role.yaml $helm_output_dir/templates/cluster-role-controller.yaml || true
 if [ "zsecretsmanager" == "z$SERVICE" ]; then
-    cat services/secretsmanager/config/rbac/cluster-role-controller.yaml | sed 's/controller/controller-helm-test/' > $helm_output_dir/templates/cluster-role-controller.yaml
+    cat $ROOT_DIR/services/secretsmanager/config/rbac/cluster-role-controller.yaml | sed 's/controller/controller-helm-test/' > $helm_output_dir/templates/cluster-role-controller.yaml
 fi
 
 popd 1>/dev/null
