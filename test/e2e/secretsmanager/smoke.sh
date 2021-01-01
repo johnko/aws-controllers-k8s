@@ -53,7 +53,7 @@ kind: AWSSecret
 metadata:
   name: $secret_name
 spec:
-  secretName: $secret_name
+  name: $secret_name
 EOF
 
 done
@@ -89,7 +89,7 @@ kind: AWSSecret
 metadata:
   name: $updated_secret_name
 spec:
-  secretName: $updated_secret_name
+  name: $updated_secret_name
   description: b
 EOF
 
