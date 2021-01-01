@@ -81,9 +81,9 @@ if [ ! -f $ACK_GENERATE_BIN_PATH ]; then
         echo "ERROR: Unable to find an ack-generate binary.
 Either set the ACK_GENERATE_BIN_PATH to a valid location or
 run:
- 
+
    make build-ack-generate
- 
+
 from the root directory or install ack-generate using:
 
    go get -u github.com/aws/aws-controllers-k8s/cmd/ack-generate" 1>&2
@@ -140,6 +140,6 @@ controller-gen rbac:roleName=$K8S_RBAC_ROLE_NAME paths=./... output:rbac:artifac
 # $config_output_dir/rbac/role.yaml file. We have some other standard Role
 # files for a reader and writer role, so here we rename the `role.yaml` file to
 # `cluster-role-controller.yaml` to better reflect what is in that file.
-mv $helm_output_dir/templates/role.yaml $helm_output_dir/templates/cluster-role-controller.yaml
+mv $helm_output_dir/templates/role.yaml $helm_output_dir/templates/cluster-role-controller.yaml || true
 
 popd 1>/dev/null
