@@ -64,24 +64,24 @@ USAGE="
 Usage:
   export AWS_ROLE_ARN=\"\$ROLE_ARN\"
   $(basename "$0") <AWS_SERVICE>
-  
+
 Builds the Docker image for an ACK service controller, loads the Docker image
 into a KinD Kubernetes cluster, creates the Deployment artifact for the ACK
 service controller and executes a set of tests.
 
-Example: export AWS_ROLE_ARN=\"\$ROLE_ARN\"; $(basename "$0") ecr 
+Example: export AWS_ROLE_ARN=\"\$ROLE_ARN\"; $(basename "$0") ecr
 
 <AWS_SERVICE> should be an AWS Service name (ecr, sns, sqs, petstore, bookstore)
 
 Environment variables:
   AWS_ROLE_ARN:             Provide AWS Role ARN for functional testing on local KinD Cluster. Mandatory.
-  PRESERVE:                 Preserve kind k8s cluster for inspection (<true|false>) 
+  PRESERVE:                 Preserve kind k8s cluster for inspection (<true|false>)
                             Default: false
-  AWS_SERVICE_DOCKER_IMG:   Provide AWS Service docker image 
+  AWS_SERVICE_DOCKER_IMG:   Provide AWS Service docker image
                             Default: aws-controllers-k8s:$AWS_SERVICE-$VERSION
   TMP_DIR                   Cluster context directory, if operating on an existing cluster
                             Default: $ROOT_DIR/build/tmp-$CLUSTER_NAME
-  K8S_VERSION               Kubernetes Version [1.14, 1.15, 1.16, 1.17, and 1.18]           
+  K8S_VERSION               Kubernetes Version [1.14, 1.15, 1.16, 1.17, and 1.18]
                             Default: 1.16
 "
 
@@ -143,7 +143,7 @@ service_config_dir="$ROOT_DIR/services/$AWS_SERVICE/config"
 ## Register the ACK service controller's CRDs in the target k8s cluster
 echo -n "loading CRD manifests for $AWS_SERVICE into the cluster ... "
 for crd_file in $service_config_dir/crd/bases; do
-    kubectl apply -f "$crd_file" --validate=false 1>/dev/null
+    kubectl apply -f "$crd_file" 1>/dev/null
 done
 echo "ok."
 
@@ -190,7 +190,7 @@ echo "==========================================================================
 
 export KUBECONFIG
 
-$TEST_RELEASE_DIR/test-helm.sh "$AWS_SERVICE" "$VERSION"
+# $TEST_RELEASE_DIR/test-helm.sh "$AWS_SERVICE" "$VERSION"
 #$TEST_E2E_DIR/build-run-test-dockerfile.sh $AWS_SERVICE
 # switching to old e2e runs temporarily until docker test runs are successful.
 $TEST_E2E_DIR/run-tests.sh $AWS_SERVICE
