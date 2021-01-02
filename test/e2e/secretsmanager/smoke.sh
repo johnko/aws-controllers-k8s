@@ -10,7 +10,7 @@ source "$SCRIPTS_DIR/lib/aws/secretsmanager.sh"
 source "$SCRIPTS_DIR/lib/k8s.sh"
 source "$SCRIPTS_DIR/lib/testutil.sh"
 
-wait_seconds=5
+wait_seconds=10
 test_name="$( filenoext "${BASH_SOURCE[0]}" )"
 service_name="secretsmanager"
 ack_ctrl_pod_id=$( controller_pod_id )

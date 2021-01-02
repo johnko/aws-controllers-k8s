@@ -35,7 +35,7 @@ var (
 	_ = &metav1.Time{}
 	_ = strings.ToLower("")
 	_ = &aws.JSONValue{}
-	_ = &svcsdk.ECR{}
+	_ = &svcsdk.SecretsManager{}
 	_ = &svcapitypes.AWSSecret{}
 	_ = ackv1alpha1.AWSAccountID("")
 	_ = &ackerr.NotFound
@@ -66,9 +66,6 @@ func (rm *resourceManager) sdkFind(
 
 	found := false
 	// for _, elem := range resp {
-		if elem.CreatedAt != nil {
-			ko.Status.CreatedAt = &metav1.Time{*elem.CreatedAt}
-		}
 		if elem.Description != nil {
 			ko.Spec.Description = elem.Description
 		}
@@ -80,11 +77,11 @@ func (rm *resourceManager) sdkFind(
 			ko.Status.ACKResourceMetadata.ARN = &tmpARN
 		}
 		if elem.Name != nil {
-			if ko.Spec.Name != nil {
-				if *elem.Name != *ko.Spec.Name {
-					continue
-				}
-			}
+			// if ko.Spec.Name != nil {
+			// 	if *elem.Name != *ko.Spec.Name {
+			// 		continue
+			// 	}
+			// }
 			ko.Spec.Name = elem.Name
 		}
 		found = true
@@ -106,8 +103,8 @@ func (rm *resourceManager) newListRequestPayload(
 ) (*svcsdk.DescribeSecretInput, error) {
 	res := &svcsdk.DescribeSecretInput{}
 
-	if r.ko.Status.Name != nil {
-		res.SetSecretId(*r.ko.Status.Name)
+	if r.ko.Spec.Name != nil {
+		res.SetSecretId(*r.ko.Spec.Name)
 	}
 
 	return res, nil
@@ -133,9 +130,9 @@ func (rm *resourceManager) sdkCreate(
 	// the original Kubernetes object we passed to the function
 	ko := r.ko.DeepCopy()
 
-	if resp.Secret.CreatedAt != nil {
-		ko.Status.CreatedAt = &metav1.Time{*resp.Secret.CreatedAt}
-	}
+  if resp.VersionId != nil {
+    ko.Status.VersionID = resp.VersionId
+  }
 	if ko.Status.ACKResourceMetadata == nil {
 		ko.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{}
 	}
@@ -230,7 +227,7 @@ func (rm *resourceManager) newDeleteRequestPayload(
 	// 	res.SetRegistryId(*r.ko.Status.RegistryID)
 	// }
 	if r.ko.Spec.Name != nil {
-		res.SetName(*r.ko.Spec.Name)
+		res.SetSecretId(*r.ko.Spec.Name)
 	}
 
 	return res, nil
@@ -238,7 +235,7 @@ func (rm *resourceManager) newDeleteRequestPayload(
 
 // setStatusDefaults sets default properties into supplied custom resource
 func (rm *resourceManager) setStatusDefaults(
-	ko *svcapitypes.Secret,
+	ko *svcapitypes.AWSSecret,
 ) {
 	if ko.Status.ACKResourceMetadata == nil {
 		ko.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{}

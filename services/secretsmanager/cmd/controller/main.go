@@ -28,6 +28,8 @@ import (
 
 	svctypes "github.com/aws/aws-controllers-k8s/services/secretsmanager/apis/v1alpha1"
 	svcresource "github.com/aws/aws-controllers-k8s/services/secretsmanager/pkg/resource"
+
+	_ "github.com/aws/aws-controllers-k8s/services/secretsmanager/pkg/resource/awssecret"
 )
 
 var (

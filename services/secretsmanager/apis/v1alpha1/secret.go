@@ -26,7 +26,7 @@ type SecretSpec struct {
 	 Description *string `json:"description,omitempty"`
 	 KMSKeyID *string `json:"kmsKeyID,omitempty"`
 	 // +kubebuilder:validation:Required
-	Name *string `json:"name"`
+	 Name *string `json:"name"`
 	 SecretBinary []byte `json:"secretBinary,omitempty"`
 	 SecretString *string `json:"secretString,omitempty"`
 	 Tags []*Tag `json:"tags,omitempty"`
