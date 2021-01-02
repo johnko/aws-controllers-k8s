@@ -128,3 +128,5 @@ for x in a b c; do
 done
 
 assert_pod_not_restarted $ack_ctrl_pod_id
+
+kubectl logs -n ack-system "$ack_ctrl_pod_id"
