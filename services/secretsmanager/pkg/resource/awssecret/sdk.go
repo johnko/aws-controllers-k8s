@@ -225,6 +225,8 @@ func (rm *resourceManager) newDeleteRequestPayload(
 	if r.ko.Spec.Name != nil {
 		res.SetSecretId(*r.ko.Spec.Name)
 	}
+	// ForceDeleteWithoutRecovery to avoid the 7-30 day delay
+	res.SetForceDeleteWithoutRecovery(true)
 
 	return res, nil
 }
