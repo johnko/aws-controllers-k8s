@@ -198,8 +198,30 @@ func (rm *resourceManager) sdkUpdate(
 	latest *resource,
 	diffReporter *ackcompare.Reporter,
 ) (*resource, error) {
-	// TODO(jaypipes): Figure this out...
-	return nil, ackerr.NotImplemented
+	input, err := rm.newUpdateRequestPayload(r)
+	if err != nil {
+		return err
+	}
+	_, respErr := rm.sdkapi.UpdateSecretWithContext(ctx, input)
+	rm.metrics.RecordAPICall("UPDATE", "UpdateSecret", respErr)
+	return respErr
+}
+
+// newUpdateRequestPayload returns an SDK-specific struct for the HTTP request
+// payload of the Update API call for the resource
+func (rm *resourceManager) newUpdateRequestPayload(
+	r *resource,
+) (*svcsdk.UpdateSecretInput, error) {
+	res := &svcsdk.UpdateSecretInput{}
+
+	if r.ko.Spec.Name != nil {
+		res.SetSecretId(*r.ko.Spec.Name)
+	}
+	if r.ko.Spec.Description != nil {
+		res.SetDescription(*r.ko.Spec.Description)
+	}
+
+	return res, nil
 }
 
 // sdkDelete deletes the supplied resource in the backend AWS service API
@@ -223,9 +245,6 @@ func (rm *resourceManager) newDeleteRequestPayload(
 ) (*svcsdk.DeleteSecretInput, error) {
 	res := &svcsdk.DeleteSecretInput{}
 
-	// if r.ko.Status.RegistryID != nil {
-	// 	res.SetRegistryId(*r.ko.Status.RegistryID)
-	// }
 	if r.ko.Spec.Name != nil {
 		res.SetSecretId(*r.ko.Spec.Name)
 	}
