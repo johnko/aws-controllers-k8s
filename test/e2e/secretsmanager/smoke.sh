@@ -10,7 +10,7 @@ source "$SCRIPTS_DIR/lib/aws/secretsmanager.sh"
 source "$SCRIPTS_DIR/lib/k8s.sh"
 source "$SCRIPTS_DIR/lib/testutil.sh"
 
-wait_seconds=10
+wait_seconds=5
 test_name="$( filenoext "${BASH_SOURCE[0]}" )"
 service_name="secretsmanager"
 ack_ctrl_pod_id=$( controller_pod_id )
@@ -112,7 +112,9 @@ for x in a b c; do
     assert_equal "0" "$?" "Expected success from kubectl delete but got $?" || exit 1
 done
 
-sleep $wait_seconds
+# longer delay because An asynchronous background process performs the actual deletion, so there can be a short delay before the operation completes.
+# https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_DeleteSecret.html#API_DeleteSecret_RequestSyntax
+sleep 60
 
 for x in a b c; do
 
