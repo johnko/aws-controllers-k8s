@@ -35,32 +35,13 @@ func (rm *resourceManager) customUpdateSecret(
 	var err error
 	var updated *resource
 	updated = desired
-	if descriptionChanged(desired, latest) {
+	// if descriptionChanged(desired, latest) {
 		updated, err = rm.updateDescription(ctx, updated)
 		if err != nil {
 			return nil, err
 		}
-	}
+	// }
 	return updated, nil
-}
-
-// descriptionChanged returns true if the image tag mutability of the
-// supplied desired and latest Repository resources is different
-func descriptionChanged(
-	desired *resource,
-	latest *resource,
-) bool {
-	dspec := desired.ko.Spec
-	lspec := latest.ko.Spec
-	if dspec.Description == nil {
-		return lspec.Description != nil
-	}
-	if lspec.Description == nil {
-		return true
-	}
-	dval := *dspec.Description
-	lval := *lspec.Description
-	return dval != lval
 }
 
 // updateDescription calls the UpdateSecret SecretsManager API call for a
@@ -75,6 +56,9 @@ func (rm *resourceManager) updateDescription(
 	}
 	if dspec.Description != nil {
 		input.SetDescription(*dspec.Description)
+	}
+	if dspec.KMSKeyID != nil {
+		input.SetKmsKeyId(*dspec.KMSKeyID)
 	}
 	_, err := rm.sdkapi.UpdateSecretWithContext(ctx, input)
 	if err != nil {

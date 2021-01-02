@@ -149,25 +149,11 @@ func (rm *resourceManager) newCreateRequestPayload(
 ) (*svcsdk.CreateSecretInput, error) {
 	res := &svcsdk.CreateSecretInput{}
 
-	// if r.ko.Spec.EncryptionConfiguration != nil {
-	// 	f0 := &svcsdk.EncryptionConfiguration{}
-	// 	if r.ko.Spec.EncryptionConfiguration.EncryptionType != nil {
-	// 		f0.SetEncryptionType(*r.ko.Spec.EncryptionConfiguration.EncryptionType)
-	// 	}
-	// 	if r.ko.Spec.EncryptionConfiguration.KMSKey != nil {
-	// 		f0.SetKmsKey(*r.ko.Spec.EncryptionConfiguration.KMSKey)
-	// 	}
-	// 	res.SetEncryptionConfiguration(f0)
-	// }
-	// if r.ko.Spec.ImageScanningConfiguration != nil {
-	// 	f1 := &svcsdk.ImageScanningConfiguration{}
-	// 	if r.ko.Spec.ImageScanningConfiguration.ScanOnPush != nil {
-	// 		f1.SetScanOnPush(*r.ko.Spec.ImageScanningConfiguration.ScanOnPush)
-	// 	}
-	// 	res.SetImageScanningConfiguration(f1)
-	// }
 	if r.ko.Spec.Description != nil {
 		res.SetDescription(*r.ko.Spec.Description)
+	}
+	if r.ko.Spec.KMSKeyID != nil {
+		res.SetKmsKeyId(*r.ko.Spec.KMSKeyID)
 	}
 	if r.ko.Spec.Name != nil {
 		res.SetName(*r.ko.Spec.Name)
