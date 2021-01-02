@@ -7,13 +7,13 @@ SCRIPTS_DIR="$ROOT_DIR/scripts"
 . $SCRIPTS_DIR/lib/common.sh
 . $SCRIPTS_DIR/lib/aws.sh
 
-# secretsmanager_secret_exists() returns 0 if an ECR Repository with the supplied name
+# secretsmanager_secret_exists() returns 0 if an SecretsManager Secret with the supplied name
 # exists, 1 otherwise.
 #
 # Usage:
 #
-#   if ! secretsmanager_secret_exists "$repo_name"; then
-#       echo "Repo $repo_name does not exist!"
+#   if ! secretsmanager_secret_exists "$secret_name"; then
+#       echo "Secret $secret_name does not exist!"
 #   fi
 secretsmanager_secret_exists() {
     __secret_id="$1"
