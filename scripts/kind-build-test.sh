@@ -172,9 +172,9 @@ echo "ok."
 echo -n "generating AWS temporary credentials and adding to env vars map ... "
 aws_generate_temp_creds
 kubectl -n ack-system set env deployment/ack-"$AWS_SERVICE"-controller \
-    AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
-    AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
-    AWS_SESSION_TOKEN="$AWS_SESSION_TOKEN" \
+    AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID_TMP" \
+    AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY_TMP" \
+    AWS_SESSION_TOKEN="$AWS_SESSION_TOKEN_TMP" \
     AWS_ACCOUNT_ID="$AWS_ACCOUNT_ID" \
     ACK_ENABLE_DEVELOPMENT_LOGGING="$ACK_ENABLE_DEVELOPMENT_LOGGING" \
     ACK_LOG_LEVEL="$ACK_LOG_LEVEL" \

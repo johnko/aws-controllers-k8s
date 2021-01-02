@@ -54,9 +54,9 @@ aws_generate_temp_creds() {
            --duration-seconds 900 \
            --output json || exit 1)
 
-    AWS_ACCESS_KEY_ID=$(echo "${JSON}" | jq --raw-output ".Credentials[\"AccessKeyId\"]")
-    AWS_SECRET_ACCESS_KEY=$(echo "${JSON}" | jq --raw-output ".Credentials[\"SecretAccessKey\"]")
-    AWS_SESSION_TOKEN=$(echo "${JSON}" | jq --raw-output ".Credentials[\"SessionToken\"]")
+    AWS_ACCESS_KEY_ID_TMP=$(echo "${JSON}" | jq --raw-output ".Credentials[\"AccessKeyId\"]")
+    AWS_SECRET_ACCESS_KEY_TMP=$(echo "${JSON}" | jq --raw-output ".Credentials[\"SecretAccessKey\"]")
+    AWS_SESSION_TOKEN_TMP=$(echo "${JSON}" | jq --raw-output ".Credentials[\"SessionToken\"]")
 }
 
 aws_account_id() {
