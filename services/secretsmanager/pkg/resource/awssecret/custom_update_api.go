@@ -35,13 +35,31 @@ func (rm *resourceManager) customUpdateSecret(
 	var err error
 	var updated *resource
 	updated = desired
-	// if descriptionChanged(desired, latest) {
+	if descriptionOrKmsKeyIdChanged(desired, latest) {
 		updated, err = rm.updateDescription(ctx, updated)
 		if err != nil {
 			return nil, err
 		}
-	// }
+	}
 	return updated, nil
+}
+
+// descriptionOrKmsKeyIdChanged returns true if the description of kmskeyid of the
+// supplied desired and latest Secret resources is different
+func descriptionOrKmsKeyIdChanged(
+  desired *resource,
+  latest *resource,
+) bool {
+  dspec := desired.ko.Spec
+  lspec := latest.ko.Spec
+
+	dvaldesc := *dspec.Description
+	lvaldesc := *lspec.Description
+	descChanged := dvaldesc != lvaldesc
+	dvalkms := *dspec.KMSKeyID
+	lvalkms := *lspec.KMSKeyID
+	kmsChanged := dvalkms != lvalkms
+	return (descChanged || kmsChanged)
 }
 
 // updateDescription calls the UpdateSecret SecretsManager API call for a
