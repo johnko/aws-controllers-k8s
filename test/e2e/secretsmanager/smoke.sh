@@ -90,7 +90,7 @@ metadata:
   name: $updated_secret_name
 spec:
   name: $updated_secret_name
-  description: b
+  description: foobar
 EOF
 
 sleep $wait_seconds
