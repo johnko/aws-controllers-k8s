@@ -36,7 +36,7 @@ func (rm *resourceManager) customUpdateSecret(
 	var updated *resource
 	updated = desired
 	if descriptionOrKmsKeyIdChanged(desired, latest) {
-		updated, err = rm.updateDescription(ctx, updated)
+		updated, err = rm.updateSecret(ctx, updated)
 		if err != nil {
 			return nil, err
 		}
@@ -81,9 +81,9 @@ func descriptionOrKmsKeyIdChanged(
 	return (descChanged || kmsChanged)
 }
 
-// updateDescription calls the UpdateSecret SecretsManager API call for a
+// updateSecret calls the UpdateSecret SecretsManager API call for a
 // specific secret
-func (rm *resourceManager) updateDescription(
+func (rm *resourceManager) updateSecret(
 	ctx context.Context,
 	desired *resource,
 ) (*resource, error) {
