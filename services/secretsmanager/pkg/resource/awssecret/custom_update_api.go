@@ -15,6 +15,7 @@ package awssecret
 
 import (
 	"context"
+	"fmt"
 
 	ackcompare "github.com/aws/aws-controllers-k8s/pkg/compare"
 	"github.com/aws/aws-sdk-go/aws"
@@ -50,15 +51,37 @@ func descriptionOrKmsKeyIdChanged(
   desired *resource,
   latest *resource,
 ) bool {
-  dspec := desired.ko.Spec
-  lspec := latest.ko.Spec
+	descChanged := false
+	kmsChanged := false
 
+  dspec := desired.ko.Spec
+	lspec := latest.ko.Spec
+
+	// avoid nil pointer dereference
+	if dspec.Description == nil {
+		return lspec.Description != nil
+	}
+	if lspec.Description == nil {
+		return true
+	}
 	dvaldesc := *dspec.Description
 	lvaldesc := *lspec.Description
-	descChanged := dvaldesc != lvaldesc
+	descChanged = dvaldesc != lvaldesc
+
+	// avoid nil pointer dereference
+	if dspec.KMSKeyID == nil {
+		return lspec.KMSKeyID != nil
+	}
+	if lspec.KMSKeyID == nil {
+		return true
+	}
 	dvalkms := *dspec.KMSKeyID
 	lvalkms := *lspec.KMSKeyID
-	kmsChanged := dvalkms != lvalkms
+	kmsChanged = dvalkms != lvalkms
+
+	fmt.Printf("descChanged is %s\n", descChanged)
+	fmt.Printf("kmsChanged is %s\n", descChanged)
+	fmt.Printf("return is %s\n", descChanged || kmsChanged)
 	return (descChanged || kmsChanged)
 }
 
