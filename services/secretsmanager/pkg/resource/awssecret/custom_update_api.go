@@ -66,8 +66,6 @@ func descriptionOrKmsKeyIdChanged(
 	}
 	dvaldesc := *dspec.Description
 	lvaldesc := *lspec.Description
-	fmt.Printf("dvaldesc is %s\n", dvaldesc)
-	fmt.Printf("lvaldesc is %s\n", lvaldesc)
 	descChanged = dvaldesc != lvaldesc
 
 	// avoid nil pointer dereference
@@ -81,9 +79,6 @@ func descriptionOrKmsKeyIdChanged(
 	lvalkms := *lspec.KMSKeyID
 	kmsChanged = dvalkms != lvalkms
 
-	fmt.Printf("descChanged is %t\n", descChanged)
-	fmt.Printf("kmsChanged is %t\n", descChanged)
-	fmt.Printf("return is %t\n", descChanged || kmsChanged)
 	return (descChanged || kmsChanged)
 }
 

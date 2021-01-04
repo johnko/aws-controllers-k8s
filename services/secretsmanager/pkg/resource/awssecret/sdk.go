@@ -67,6 +67,7 @@ func (rm *resourceManager) sdkFind(
 	// overwrite Description and KMSKeyID with value from response
 	ko.Spec.Description = elem.Description
 	ko.Spec.KMSKeyID = elem.KmsKeyId
+
 	if elem.ARN != nil {
 		if ko.Status.ACKResourceMetadata == nil {
 			ko.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{}

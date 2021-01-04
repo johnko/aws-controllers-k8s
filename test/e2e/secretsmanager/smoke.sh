@@ -90,10 +90,13 @@ metadata:
   name: $updated_secret_name
 spec:
   name: $updated_secret_name
-  description: foobar
+  description: b
 EOF
 
 sleep $wait_seconds
+
+kubectl get awssecrets
+kubectl describe awssecret $updated_secret_name
 
 debug_msg "checking secret $updated_secret_name updated description in SecretsManager"
 isc_json=$( secretsmanager_secret_jq $updated_secret_name '.Description')
