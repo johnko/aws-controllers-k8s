@@ -64,8 +64,8 @@ func descriptionOrKmsKeyIdChanged(
 	if lspec.Description == nil {
 		return true
 	}
-	dvaldesc := *dspec.Description
-	lvaldesc := *lspec.Description
+	dvaldesc := dspec.Description
+	lvaldesc := lspec.Description
 	fmt.Printf("dvaldesc is %s\n", dvaldesc)
 	fmt.Printf("lvaldesc is %s\n", lvaldesc)
 	descChanged = dvaldesc != lvaldesc
@@ -77,13 +77,13 @@ func descriptionOrKmsKeyIdChanged(
 	if lspec.KMSKeyID == nil {
 		return true
 	}
-	dvalkms := *dspec.KMSKeyID
-	lvalkms := *lspec.KMSKeyID
+	dvalkms := dspec.KMSKeyID
+	lvalkms := lspec.KMSKeyID
 	kmsChanged = dvalkms != lvalkms
 
-	fmt.Printf("descChanged is %s\n", descChanged)
-	fmt.Printf("kmsChanged is %s\n", descChanged)
-	fmt.Printf("return is %s\n", descChanged || kmsChanged)
+	fmt.Printf("descChanged is %t\n", descChanged)
+	fmt.Printf("kmsChanged is %t\n", descChanged)
+	fmt.Printf("return is %t\n", descChanged || kmsChanged)
 	return (descChanged || kmsChanged)
 }
 
