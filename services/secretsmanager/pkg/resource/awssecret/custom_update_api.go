@@ -15,7 +15,6 @@ package awssecret
 
 import (
 	"context"
-	"fmt"
 
 	ackcompare "github.com/aws/aws-controllers-k8s/pkg/compare"
 	"github.com/aws/aws-sdk-go/aws"
