@@ -66,6 +66,8 @@ func descriptionOrKmsKeyIdChanged(
 	}
 	dvaldesc := *dspec.Description
 	lvaldesc := *lspec.Description
+	fmt.Printf("dvaldesc is %s\n", dvaldesc)
+	fmt.Printf("lvaldesc is %s\n", lvaldesc)
 	descChanged = dvaldesc != lvaldesc
 
 	// avoid nil pointer dereference
