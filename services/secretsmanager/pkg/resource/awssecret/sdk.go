@@ -64,31 +64,15 @@ func (rm *resourceManager) sdkFind(
 	// the original Kubernetes object we passed to the function
 	ko := r.ko.DeepCopy()
 
-	found := false
-	// for _, elem := range resp {
-		if elem.Description != nil {
-			ko.Spec.Description = elem.Description
+	// overwrite Description and KMSKeyID with value from response
+	ko.Spec.Description = elem.Description
+	ko.Spec.KMSKeyID = elem.KmsKeyId
+	if elem.ARN != nil {
+		if ko.Status.ACKResourceMetadata == nil {
+			ko.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{}
 		}
-		if elem.ARN != nil {
-			if ko.Status.ACKResourceMetadata == nil {
-				ko.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{}
-			}
-			tmpARN := ackv1alpha1.AWSResourceName(*elem.ARN)
-			ko.Status.ACKResourceMetadata.ARN = &tmpARN
-		}
-		if elem.Name != nil {
-			// if ko.Spec.Name != nil {
-			// 	if *elem.Name != *ko.Spec.Name {
-			// 		continue
-			// 	}
-			// }
-			ko.Spec.Name = elem.Name
-		}
-		found = true
-		// break
-	// }
-	if !found {
-		return nil, ackerr.NotFound
+		tmpARN := ackv1alpha1.AWSResourceName(*elem.ARN)
+		ko.Status.ACKResourceMetadata.ARN = &tmpARN
 	}
 
 	rm.setStatusDefaults(ko)
