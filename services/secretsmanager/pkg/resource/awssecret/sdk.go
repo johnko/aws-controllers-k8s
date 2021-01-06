@@ -51,7 +51,7 @@ func (rm *resourceManager) sdkFind(
 		return nil, err
 	}
 
-	elem, respErr := rm.sdkapi.DescribeSecretWithContext(ctx, input)
+	resp, respErr := rm.sdkapi.DescribeSecretWithContext(ctx, input)
 	rm.metrics.RecordAPICall("READ_ONE", "DescribeSecret", respErr)
 	if respErr != nil {
 		if awsErr, ok := ackerr.AWSError(respErr); ok && awsErr.Code() == "ResourceNotFoundException" {
@@ -65,15 +65,15 @@ func (rm *resourceManager) sdkFind(
 	ko := r.ko.DeepCopy()
 
 	// overwrite Description and KMSKeyID with value from response
-	ko.Spec.Description = elem.Description
-	ko.Spec.KMSKeyID = elem.KmsKeyId
+	ko.Spec.Description = resp.Description
+	ko.Spec.KMSKeyID = resp.KmsKeyId
 
-	if elem.ARN != nil {
-		if ko.Status.ACKResourceMetadata == nil {
-			ko.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{}
-		}
-		tmpARN := ackv1alpha1.AWSResourceName(*elem.ARN)
-		ko.Status.ACKResourceMetadata.ARN = &tmpARN
+	if ko.Status.ACKResourceMetadata == nil {
+		ko.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{}
+	}
+	if resp.ARN != nil {
+		arn := ackv1alpha1.AWSResourceName(*resp.ARN)
+		ko.Status.ACKResourceMetadata.ARN = &arn
 	}
 
 	rm.setStatusDefaults(ko)
@@ -115,9 +115,9 @@ func (rm *resourceManager) sdkCreate(
 	// the original Kubernetes object we passed to the function
 	ko := r.ko.DeepCopy()
 
-  if resp.VersionId != nil {
-    ko.Status.VersionID = resp.VersionId
-  }
+	if resp.VersionId != nil {
+		ko.Status.VersionID = resp.VersionId
+	}
 	if ko.Status.ACKResourceMetadata == nil {
 		ko.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{}
 	}

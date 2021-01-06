@@ -22,14 +22,14 @@ import (
 
 // SecretSpec defines the desired state of Secret
 type SecretSpec struct {
-	 ClientRequestToken *string `json:"clientRequestToken,omitempty"`
-	 Description *string `json:"description,omitempty"`
-	 KMSKeyID *string `json:"kmsKeyID,omitempty"`
-	 // +kubebuilder:validation:Required
-	 Name *string `json:"name"`
-	 SecretBinary []byte `json:"secretBinary,omitempty"`
-	 SecretString *string `json:"secretString,omitempty"`
-	 Tags []*Tag `json:"tags,omitempty"`
+	ClientRequestToken *string `json:"clientRequestToken,omitempty"`
+	Description        *string `json:"description,omitempty"`
+	KMSKeyID           *string `json:"kmsKeyID,omitempty"`
+	// +kubebuilder:validation:Required
+	Name         *string `json:"name"`
+	SecretBinary []byte  `json:"secretBinary,omitempty"`
+	SecretString *string `json:"secretString,omitempty"`
+	Tags         []*Tag  `json:"tags,omitempty"`
 }
 
 // SecretStatus defines the observed state of Secret
@@ -43,7 +43,7 @@ type SecretStatus struct {
 	// the various terminal states of the CR and its backend AWS service API
 	// resource
 	Conditions []*ackv1alpha1.Condition `json:"conditions"`
-	VersionID *string `json:"versionID,omitempty"`
+	VersionID  *string                  `json:"versionID,omitempty"`
 }
 
 // Secret is the Schema for the Secrets API
@@ -52,8 +52,8 @@ type SecretStatus struct {
 type AWSSecret struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec   SecretSpec   `json:"spec,omitempty"`
-	Status SecretStatus `json:"status,omitempty"`
+	Spec              SecretSpec   `json:"spec,omitempty"`
+	Status            SecretStatus `json:"status,omitempty"`
 }
 
 // SecretList contains a list of Secret
@@ -61,7 +61,7 @@ type AWSSecret struct {
 type AWSSecretList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items []AWSSecret `json:"items"`
+	Items           []AWSSecret `json:"items"`
 }
 
 func init() {

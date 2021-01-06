@@ -19,15 +19,15 @@ type FilterNameStringType string
 
 const (
 	FilterNameStringType_description FilterNameStringType = "description"
-	FilterNameStringType_name FilterNameStringType = "name"
-	FilterNameStringType_tag_key FilterNameStringType = "tag-key"
-	FilterNameStringType_tag_value FilterNameStringType = "tag-value"
-	FilterNameStringType_all FilterNameStringType = "all"
+	FilterNameStringType_name        FilterNameStringType = "name"
+	FilterNameStringType_tag_key     FilterNameStringType = "tag-key"
+	FilterNameStringType_tag_value   FilterNameStringType = "tag-value"
+	FilterNameStringType_all         FilterNameStringType = "all"
 )
 
 type SortOrderType string
 
 const (
-	SortOrderType_asc SortOrderType = "asc"
+	SortOrderType_asc  SortOrderType = "asc"
 	SortOrderType_desc SortOrderType = "desc"
 )

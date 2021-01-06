@@ -47,13 +47,13 @@ func (rm *resourceManager) customUpdateSecret(
 // descriptionOrKmsKeyIdChanged returns true if the description of kmskeyid of the
 // supplied desired and latest Secret resources is different
 func descriptionOrKmsKeyIdChanged(
-  desired *resource,
-  latest *resource,
+	desired *resource,
+	latest *resource,
 ) bool {
 	descChanged := false
 	kmsChanged := false
 
-  dspec := desired.ko.Spec
+	dspec := desired.ko.Spec
 	lspec := latest.ko.Spec
 
 	// avoid nil pointer dereference
