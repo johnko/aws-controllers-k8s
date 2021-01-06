@@ -121,6 +121,10 @@ func (rm *resourceManager) sdkCreate(
 	if ko.Status.ACKResourceMetadata == nil {
 		ko.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{}
 	}
+	if resp.ARN != nil {
+		arn := ackv1alpha1.AWSResourceName(*resp.ARN)
+		ko.Status.ACKResourceMetadata.ARN = &arn
+	}
 
 	rm.setStatusDefaults(ko)
 
