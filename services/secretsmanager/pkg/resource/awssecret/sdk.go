@@ -76,6 +76,11 @@ func (rm *resourceManager) sdkFind(
 		ko.Status.ACKResourceMetadata.ARN = &arn
 	}
 
+	ko.Status.CreatedDate = resp.CreatedDate
+	ko.Status.OwningService = resp.OwningService
+	ko.Status.RotationEnabled = resp.RotationEnabled
+	ko.Status.RotationLambdaARN = resp.RotationLambdaARN
+
 	rm.setStatusDefaults(ko)
 
 	return &resource{ko}, nil
@@ -147,9 +152,9 @@ func (rm *resourceManager) newCreateRequestPayload(
 	if r.ko.Spec.Name != nil {
 		res.SetName(*r.ko.Spec.Name)
 	}
-	if r.ko.Spec.Tags != nil {
+	if r.ko.Metadata.Labels != nil {
 		f4 := []*svcsdk.Tag{}
-		for _, f4iter := range r.ko.Spec.Tags {
+		for _, f4iter := range r.ko.Metadata.Labels {
 			f4elem := &svcsdk.Tag{}
 			if f4iter.Key != nil {
 				f4elem.SetKey(*f4iter.Key)

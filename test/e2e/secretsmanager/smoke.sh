@@ -52,6 +52,8 @@ apiVersion: secretsmanager.services.k8s.aws/v1alpha1
 kind: AWSSecret
 metadata:
   name: $secret_name
+  labels:
+    - foobar: $x
 spec:
   name: $secret_name
 EOF
@@ -83,11 +85,17 @@ updated_secret_name="ack-test-smoke-$service_name-b"
 # isc_json=$( secretsmanager_secret_jq $updated_secret_name '.Description')
 # assert_equal "false" "$isc_json" "Expected description to be '' but got '$isc_json'" || exit 1
 
+kubectl get awssecrets
+kubectl get awssecret $updated_secret_name -o yaml
+kubectl describe awssecret $updated_secret_name
+
 cat <<EOF | kubectl apply -f -
 apiVersion: secretsmanager.services.k8s.aws/v1alpha1
 kind: AWSSecret
 metadata:
   name: $updated_secret_name
+  labels:
+    - foobar: b
 spec:
   name: $updated_secret_name
   description: b
@@ -101,6 +109,10 @@ kubectl describe awssecret $updated_secret_name
 debug_msg "checking secret $updated_secret_name updated description in SecretsManager"
 isc_json=$( secretsmanager_secret_jq $updated_secret_name '.Description')
 assert_equal "b" "$isc_json" "Expected description to be 'b' but got '$isc_json'" || exit 1
+
+debug_msg "checking secret $updated_secret_name updated tags in SecretsManager"
+isc_json=$( secretsmanager_secret_jq $updated_secret_name '.Tags[0].Value')
+assert_equal "b" "$isc_json" "Expected tag to be 'b' but got '$isc_json'" || exit 1
 
 sleep $wait_seconds
 
