@@ -117,6 +117,8 @@ isc_json=$( secretsmanager_secret_jq $updated_secret_name '.Description')
 assert_equal "b" "$isc_json" "Expected description to be 'b' but got '$isc_json'" || exit 1
 
 debug_msg "checking secret $updated_secret_name updated tags in SecretsManager"
+isc_json=$( secretsmanager_secret_jq $updated_secret_name '.Tags[0].Key')
+assert_equal "foobar" "$isc_json" "Expected tag to be 'foobar' but got '$isc_json'" || exit 1
 isc_json=$( secretsmanager_secret_jq $updated_secret_name '.Tags[0].Value')
 assert_equal "b" "$isc_json" "Expected tag to be 'b' but got '$isc_json'" || exit 1
 
