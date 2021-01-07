@@ -27,11 +27,6 @@ type SecretSpec struct {
 	ClientRequestToken *string `json:"clientRequestToken,omitempty"`
 	Description        *string `json:"description,omitempty"`
 	KMSKeyID           *string `json:"kmsKeyID,omitempty"`
-	// +kubebuilder:validation:Required
-	Name         *string `json:"name"`
-	SecretBinary []byte  `json:"secretBinary,omitempty"`
-	SecretString *string `json:"secretString,omitempty"`
-	Tags         []*Tag  `json:"tags,omitempty"`
 }
 
 // SecretStatus defines the observed state of Secret

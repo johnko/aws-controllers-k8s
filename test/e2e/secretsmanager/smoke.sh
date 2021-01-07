@@ -54,8 +54,6 @@ metadata:
   name: $secret_name
   labels:
     foobar: $x
-spec:
-  name: $secret_name
 EOF
 
 done
@@ -101,9 +99,8 @@ kind: AWSSecret
 metadata:
   name: $updated_secret_name
   labels:
-    foobar: b
+    foo: bar
 spec:
-  name: $updated_secret_name
   description: b
 EOF
 
@@ -118,9 +115,9 @@ assert_equal "b" "$isc_json" "Expected description to be 'b' but got '$isc_json'
 
 debug_msg "checking secret $updated_secret_name updated tags in SecretsManager"
 isc_json=$( secretsmanager_secret_jq $updated_secret_name '.Tags[0].Key')
-assert_equal "foobar" "$isc_json" "Expected tag to be 'foobar' but got '$isc_json'" || exit 1
+assert_equal "foo" "$isc_json" "Expected tag to be 'foo' but got '$isc_json'" || exit 1
 isc_json=$( secretsmanager_secret_jq $updated_secret_name '.Tags[0].Value')
-assert_equal "b" "$isc_json" "Expected tag to be 'b' but got '$isc_json'" || exit 1
+assert_equal "bar" "$isc_json" "Expected tag to be 'bar' but got '$isc_json'" || exit 1
 
 sleep $wait_seconds
 

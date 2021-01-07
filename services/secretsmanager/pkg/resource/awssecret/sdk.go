@@ -103,9 +103,7 @@ func (rm *resourceManager) newListRequestPayload(
 ) (*svcsdk.DescribeSecretInput, error) {
 	res := &svcsdk.DescribeSecretInput{}
 
-	if r.ko.Spec.Name != nil {
-		res.SetSecretId(*r.ko.Spec.Name)
-	}
+	res.SetSecretId(r.ko.ObjectMeta.Name)
 
 	return res, nil
 }
@@ -153,14 +151,13 @@ func (rm *resourceManager) newCreateRequestPayload(
 ) (*svcsdk.CreateSecretInput, error) {
 	res := &svcsdk.CreateSecretInput{}
 
+	res.SetName(r.ko.ObjectMeta.Name)
+
 	if r.ko.Spec.Description != nil {
 		res.SetDescription(*r.ko.Spec.Description)
 	}
 	if r.ko.Spec.KMSKeyID != nil {
 		res.SetKmsKeyId(*r.ko.Spec.KMSKeyID)
-	}
-	if r.ko.Spec.Name != nil {
-		res.SetName(*r.ko.Spec.Name)
 	}
 	if r.ko.ObjectMeta.Labels != nil {
 		f4 := []*svcsdk.Tag{}
@@ -208,9 +205,8 @@ func (rm *resourceManager) newDeleteRequestPayload(
 ) (*svcsdk.DeleteSecretInput, error) {
 	res := &svcsdk.DeleteSecretInput{}
 
-	if r.ko.Spec.Name != nil {
-		res.SetSecretId(*r.ko.Spec.Name)
-	}
+	res.SetSecretId(r.ko.ObjectMeta.Name)
+
 	// ForceDeleteWithoutRecovery to avoid the 7-30 day delay
 	res.SetForceDeleteWithoutRecovery(true)
 

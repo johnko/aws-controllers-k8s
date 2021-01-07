@@ -89,7 +89,7 @@ func (rm *resourceManager) updateSecret(
 ) (*resource, error) {
 	dspec := desired.ko.Spec
 	input := &svcsdk.UpdateSecretInput{
-		SecretId: aws.String(*dspec.Name),
+		SecretId: aws.String(desired.ko.ObjectMeta.Name),
 	}
 	if dspec.Description != nil {
 		input.SetDescription(*dspec.Description)
