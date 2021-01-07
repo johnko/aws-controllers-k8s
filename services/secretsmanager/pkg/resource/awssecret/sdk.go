@@ -68,6 +68,8 @@ func (rm *resourceManager) sdkFind(
 	ko.Spec.Description = resp.Description
 	ko.Spec.KMSKeyID = resp.KmsKeyId
 
+	ko.Status.CreatedDate = resp.CreatedDate
+
 	if ko.Status.ACKResourceMetadata == nil {
 		ko.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{}
 	}
@@ -76,10 +78,18 @@ func (rm *resourceManager) sdkFind(
 		ko.Status.ACKResourceMetadata.ARN = &arn
 	}
 
-	ko.Status.CreatedDate = resp.CreatedDate
-	ko.Status.OwningService = resp.OwningService
-	ko.Status.RotationEnabled = resp.RotationEnabled
-	ko.Status.RotationLambdaARN = resp.RotationLambdaARN
+	if resp.OwningService != nil {
+		ko.Status.OwningService = resp.OwningService
+	}
+
+	if resp.RotationEnabled != nil {
+		ko.Status.RotationEnabled = resp.RotationEnabled
+	}
+
+	if resp.RotationLambdaARN != nil {
+		rotationArn := ackv1alpha1.AWSResourceName(*resp.RotationLambdaARN)
+		ko.Status.RotationLambdaARN = &rotationArn
+	}
 
 	rm.setStatusDefaults(ko)
 
@@ -152,16 +162,12 @@ func (rm *resourceManager) newCreateRequestPayload(
 	if r.ko.Spec.Name != nil {
 		res.SetName(*r.ko.Spec.Name)
 	}
-	if r.ko.Metadata.Labels != nil {
+	if r.ko.ObjectMeta.Labels != nil {
 		f4 := []*svcsdk.Tag{}
-		for _, f4iter := range r.ko.Metadata.Labels {
+		for f4index, f4iter := range r.ko.ObjectMeta.Labels {
 			f4elem := &svcsdk.Tag{}
-			if f4iter.Key != nil {
-				f4elem.SetKey(*f4iter.Key)
-			}
-			if f4iter.Value != nil {
-				f4elem.SetValue(*f4iter.Value)
-			}
+			f4elem.SetKey(f4index)
+			f4elem.SetValue(f4iter)
 			f4 = append(f4, f4elem)
 		}
 		res.SetTags(f4)

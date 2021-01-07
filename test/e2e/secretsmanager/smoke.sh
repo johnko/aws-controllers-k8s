@@ -53,7 +53,7 @@ kind: AWSSecret
 metadata:
   name: $secret_name
   labels:
-    - foobar: $x
+    foobar: $x
 spec:
   name: $secret_name
 EOF
@@ -89,13 +89,19 @@ kubectl get awssecrets
 kubectl get awssecret $updated_secret_name -o yaml
 kubectl describe awssecret $updated_secret_name
 
+for x in a b c; do
+  secret_name="ack-test-smoke-secretsmanager-$x"
+  echo "+ aws secretsmanager describe-secret --secret-id $secret_name"
+  daws secretsmanager describe-secret --secret-id $secret_name
+done
+
 cat <<EOF | kubectl apply -f -
 apiVersion: secretsmanager.services.k8s.aws/v1alpha1
 kind: AWSSecret
 metadata:
   name: $updated_secret_name
   labels:
-    - foobar: b
+    foobar: b
 spec:
   name: $updated_secret_name
   description: b

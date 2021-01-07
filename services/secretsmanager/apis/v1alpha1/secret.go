@@ -16,6 +16,8 @@
 package v1alpha1
 
 import (
+	"time"
+
 	ackv1alpha1 "github.com/aws/aws-controllers-k8s/apis/core/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -42,8 +44,12 @@ type SecretStatus struct {
 	// contains a collection of `ackv1alpha1.Condition` objects that describe
 	// the various terminal states of the CR and its backend AWS service API
 	// resource
-	Conditions []*ackv1alpha1.Condition `json:"conditions"`
-	VersionID  *string                  `json:"versionID,omitempty"`
+	Conditions        []*ackv1alpha1.Condition     `json:"conditions"`
+	VersionID         *string                      `json:"versionID,omitempty"`
+	CreatedDate       *time.Time                   `json:"createdDate,omitempty"`
+	OwningService     *string                      `json:"owningService,omitempty"`
+	RotationEnabled   *bool                        `json:"rotationEnabled"`
+	RotationLambdaARN *ackv1alpha1.AWSResourceName `json:"rotationLambdaARN,omitempty"`
 }
 
 // Secret is the Schema for the Secrets API
